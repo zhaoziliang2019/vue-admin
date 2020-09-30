@@ -1,0 +1,23 @@
+{
+  "id": "2109146",
+  "name": "人",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "7684914",
+      "name": "user",
+      "font_class": "user",
+      "unicode": "e6cc",
+      "unicode_decimal": 59084
+    },
+    {
+      "icon_id": "8622874",
+      "name": "mima",
+      "font_class": "mima",
+      "unicode": "e619",
+      "unicode_decimal": 58905
+    }
+  ]
+}
