@@ -17,10 +17,10 @@ module.exports = {
   rules: {
     'no-console': 'off',
     'no-debugger': 'off',
-    'no-tabs':'off'
+    'no-tabs': 'off'
   },
 
-  'extends': [
+  extends: [
     'plugin:vue/essential',
     '@vue/standard'
   ]
