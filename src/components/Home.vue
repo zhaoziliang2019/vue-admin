@@ -84,7 +84,7 @@ export default {
     },
     //获取所有的菜单
     async getMenuList() {
-      const { data: res } = await this.$http.get("/Permission/navigation");
+      const { data: res } = await this.$http.get("/menus/get");
       //console.log(res);
       if (!res.success) return this.$message.error(res.msg);
       this.menulist = res.response.children;

@@ -3,8 +3,8 @@
     <!--面包屑导航区域-->
     <el-breadcrumb separator="/">
       <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item>系统管理</el-breadcrumb-item>
       <el-breadcrumb-item>用户管理</el-breadcrumb-item>
-      <el-breadcrumb-item>用户列表</el-breadcrumb-item>
     </el-breadcrumb>
     <!--卡片视图区域-->
     <el-card class="box-card">
@@ -63,7 +63,7 @@
             ></el-switch>
           </template>
         </el-table-column> -->
-        <el-table-column label="操作" width="180">
+        <el-table-column label="操作" width="120">
           <template slot-scope="scope">
             <!--修改按钮-->
             <el-button
@@ -79,19 +79,6 @@
               size="mini"
               @click="removeUserById(scope.row.uID)"
             ></el-button>
-            <!--分配角色-->
-            <el-tooltip
-              :enterable="false"
-              effect="dark"
-              content="分配角色"
-              placement="top"
-            >
-              <el-button
-                type="warning"
-                icon="el-icon-setting"
-                size="mini"
-              ></el-button>
-            </el-tooltip>
           </template>
         </el-table-column>
       </el-table>
@@ -187,6 +174,22 @@
         <el-form-item label="地址" prop="uAddress">
           <el-input type="textarea" v-model="editForm.uAddress"></el-input>
         </el-form-item>
+        <el-form-item label="角色" prop="rIDs">
+          <el-select
+            v-model="editForm.rIDs"
+            multiple
+            filterable
+            placeholder="请选择角色"
+          >
+            <el-option
+              v-for="item in roles"
+              :key="item.rID"
+              :label="item.rName"
+              :value="item.rID"
+            >
+            </el-option>
+          </el-select>
+        </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="editdialogVisible = false">取 消</el-button>
@@ -226,6 +229,7 @@ export default {
         page: 1,
         pagesize: 10,
       },
+      roles: [],
       userlist: [],
       total: 0,
       //控制添加用户对话框的显示与隐藏
@@ -368,6 +372,10 @@ export default {
         params: { uid: id },
       });
       if (!res.success) return this.$message.error(res.msg);
+      const { data: re } = await this.$http.get(`roles/rolelist`);
+      if (!re.success) return this.$message.error(re.msg);
+      this.roles = re.response;
+      console.log(re.response);
       this.editForm = res.response;
       this.editdialogVisible = true;
     },
@@ -378,7 +386,7 @@ export default {
     //修改用户信息并提交
     editUserInfo() {
       this.$refs.editFormRef.validate(async (valid) => {
-        //console.log(valid);
+        console.log(this.editForm);
         if (!valid) return;
         //发起修改用户信息的数据请求
         const { data: res } = await this.$http.put(
@@ -395,7 +403,7 @@ export default {
       });
     },
     //根据id删除对应的用户信息
-     removeUserById(id) {
+    removeUserById(id) {
       //询问用户是否删除数据
       this.$confirm("此操作将永久删除该用户, 是否继续?", "提示", {
         confirmButtonText: "确定",
@@ -404,14 +412,16 @@ export default {
       })
         .then(async () => {
           //删除用户信息
-         const {data:res} =await this.$http.delete('user/deleteuser',{params:{uid:id}})
-         if(!res.success) return this.$message.error(res.msg)
+          const { data: res } = await this.$http.delete("user/deleteuser", {
+            params: { uid: id },
+          });
+          if (!res.success) return this.$message.error(res.msg);
           this.$message({
             type: "success",
             message: "删除成功!",
           });
           //重新获取数据
-          this.getUserList()
+          this.getUserList();
         })
         .catch(() => {
           this.$message({

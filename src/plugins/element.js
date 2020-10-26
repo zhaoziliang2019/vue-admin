@@ -3,7 +3,7 @@ import {
   Button, Form, FormItem, Input, Message, Container, Header, Aside, Main,
   Menu, Submenu, MenuItemGroup, MenuItem,Breadcrumb,BreadcrumbItem,Card,
   Row,Col,Table,TableColumn,Switch,Tooltip,Pagination,Dialog,Radio,RadioGroup,
-  MessageBox
+  MessageBox,Tag,Tree,Select,Option,Cascader
 } from 'element-ui'
 
 // 导入弹框提示组件
@@ -32,6 +32,11 @@ Vue.use(Pagination)
 Vue.use(Dialog)
 Vue.use(Radio)
 Vue.use(RadioGroup)
+Vue.use(Tag)
+Vue.use(Tree)
+Vue.use(Select)
+Vue.use(Option)
+Vue.use(Cascader)
 // 挂载
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm
