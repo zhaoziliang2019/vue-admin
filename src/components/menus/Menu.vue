@@ -129,7 +129,7 @@
           ></el-cascader>
         </el-form-item>
         <el-form-item label="菜单名" prop="mName">
-          <el-input v-model="editForm.mName"></el-input>
+          <el-input v-model="editForm.mName" disabled></el-input>
         </el-form-item>
         <el-form-item label="路由路径" prop="mPath">
           <el-tooltip

@@ -38,8 +38,8 @@
       >
       <el-table-column type="index"></el-table-column>
       <el-table-column prop="name" label="权限名"></el-table-column>
-      <el-table-column prop="pName" label="创建人"></el-table-column>
-      <el-table-column prop="pName" label="创建时间"></el-table-column>
+      <el-table-column prop="pCreateBy" label="创建人"></el-table-column>
+      <el-table-column prop="pModifyBy" label="创建时间"></el-table-column>
       <el-table-column prop="pName" label="修改人"></el-table-column>
       <el-table-column prop="pName" label="修改时间"></el-table-column>
       <el-table-column label="操作" width="180">
