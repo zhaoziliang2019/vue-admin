@@ -31,14 +31,18 @@
         </el-col>
       </el-row>
       <!--用户列表区域-->
-      <el-table :data="userlist" border stripe>
+      <el-table   :data="userlist" border stripe>
         <el-table-column type="index"></el-table-column>
         <el-table-column label="昵称" prop="uRealName"></el-table-column>
         <el-table-column label="用户名" prop="uLoginName"></el-table-column>
         <el-table-column label="手机号" prop="uPhone"></el-table-column>
         <el-table-column label="邮箱" prop="uEmail"></el-table-column>
         <el-table-column label="地址" prop="uAddress"></el-table-column>
-        <el-table-column label="角色名" prop="uLoginName"></el-table-column>
+        <el-table-column label="角色名" width="180">
+           <template slot-scope="scope">
+                    <el-tag v-for="item in scope.row.rNames" :key="item.Id" >{{item}}</el-tag>
+          </template>
+        </el-table-column>
         <el-table-column
           label="性别"
           prop="uSex"

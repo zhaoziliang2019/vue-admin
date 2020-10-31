@@ -372,7 +372,7 @@ export default {
       //获取三级节点的id
       this.getLeafKeys(role, this.defKeys);
       this.setPermissionDialogVisible = true;
-      console.log(this.defKeys);
+      console.log(role);
     },
     //通过递归的形式，获取角色下所有三级权限的id，并保存到defKeys数组中
     getLeafKeys(node, arr) {

@@ -8,6 +8,8 @@ import Permissions from '../components/power/Permissions.vue'
 import Interface from '../components/interfaces/Interface.vue'
 import Menu from '../components/menus/Menu.vue'
 import Roles from '../components/power/Roles.vue'
+import Cate from '../components/goods/Cate.vue'
+import Params from '../components/goods/Params.vue'
 Vue.use(VueRouter)
 const routes = [
   { path: '/', redirect: '/login' },
@@ -22,7 +24,9 @@ const routes = [
       { path: '/permissions', component: Permissions },
       { path: '/interfaces', component: Interface },
       { path: '/menus', component: Menu },
-      { path: '/roles', component: Roles }
+      { path: '/roles', component: Roles },
+      { path: '/categories', component: Cate },
+      { path: '/params', component: Params }
     ]
   },
 ]

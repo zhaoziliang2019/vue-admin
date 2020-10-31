@@ -28,9 +28,9 @@
         <el-table-column label="菜单图标" prop="mIcon"></el-table-column>
         <el-table-column label="菜单描述" prop="mDescription"></el-table-column>
         <el-table-column label="创建人" prop="mCreateBy"></el-table-column>
-        <el-table-column label="创建时间" prop="mCreateTime"></el-table-column>
+        <el-table-column label="创建时间" prop="mCreateTime" :formatter="formatDateTime"></el-table-column>
         <el-table-column label="修改人" prop="mModifyBy"></el-table-column>
-        <el-table-column label="修改时间" prop="mUpdateTime"></el-table-column>
+        <el-table-column label="修改时间" prop="mUpdateTime" :formatter="formatDateTime"></el-table-column>
         <el-table-column label="操作" width="180">
           <template slot-scope="scope">
             <el-button
@@ -68,8 +68,12 @@
           <el-cascader
             :options="moptions"
             change-on-select
+            :props="{
+              expandTrigger: 'hover',
+              checkStrictly: true,
+            }"
             emitPath="false"
-            style="width: 400px"
+            style="width: 100%"
             clearable
             placeholder="请选择父级菜单"
             v-model="addForm.arrPid"
@@ -222,6 +226,10 @@ export default {
       const { data: res } = await this.$http.get(`menus/list`);
       if (!res.success) return this.$message.error(res.msg);
       this.menulist = res.response;
+    },
+    //格式化时间
+    formatDateTime: function (row, column, cellValue, index) {
+      return cellValue.replace("T", " ");
     },
     //监听关闭添加菜单对话框事件
     addDialogClosed() {

@@ -77,7 +77,7 @@ export default {
         // console.log(valid);
         if (!valid) return;
         const { data: result } = await this.$http.get("login/login1.0", {params:this.loginForm});
-        if (!result.success) return this.$message.error("登录失败");
+        if (!result.success) return this.$message.error(result.msg);
         this.$message.success("登录成功");
         //保存token到本地
         window.sessionStorage.setItem("token", result.response.token);
