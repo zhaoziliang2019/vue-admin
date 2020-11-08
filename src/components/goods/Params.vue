@@ -231,7 +231,7 @@ export default {
   methods: {
     //获取所有的商品分类列表
     async getCateList() {
-      const { data: res } = await this.$http.get(`goods/parentcates`);
+      const { data: res } = await this.$http.get(`categories/parentcates`);
       if (!res.success) return this.$message.error(res.msg);
       this.parentCateList = res.response;
     },

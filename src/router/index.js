@@ -10,6 +10,8 @@ import Menu from '../components/menus/Menu.vue'
 import Roles from '../components/power/Roles.vue'
 import Cate from '../components/goods/Cate.vue'
 import Params from '../components/goods/Params.vue'
+import Lists from '../components/goods/Lists.vue'
+import Add from '../components/goods/Add.vue'
 Vue.use(VueRouter)
 const routes = [
   { path: '/', redirect: '/login' },
@@ -26,7 +28,9 @@ const routes = [
       { path: '/menus', component: Menu },
       { path: '/roles', component: Roles },
       { path: '/categories', component: Cate },
-      { path: '/params', component: Params }
+      { path: '/cateparams', component: Params },
+      { path: '/goodslists', component: Lists },
+      { path: '/goods/add', component: Add },
     ]
   },
 ]

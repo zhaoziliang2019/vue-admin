@@ -189,7 +189,7 @@ export default {
   methods: {
     //获取商品分类列表
     async getCateList() {
-      const { data: res } = await this.$http.get(`goods/categories`, {
+      const { data: res } = await this.$http.get(`categories/categories`, {
         params: this.queryInfo,
       });
       if (!res.success) return this.$message.error(res.msg);
@@ -214,7 +214,7 @@ export default {
     },
     //获取父级分类数据列表
     async getParentCateList() {
-      const { data: res } = await this.$http.get(`goods/parentcates`);
+      const { data: res } = await this.$http.get(`categories/parentcates`);
       if (!res.success) return this.$message.error(res.msg);
       this.parentCateList = res.response;
     },
@@ -242,7 +242,7 @@ export default {
       this.$refs.addCateFormRef.validate(async (valid) => {
         if (!valid) return;
         const { data: res } = await this.$http.post(
-          `goods/addcate`,
+          `categories/addcate`,
           this.addCateForm
         );
         if (!res.success) return this.$message.error(res.msg);
