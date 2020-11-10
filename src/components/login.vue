@@ -34,58 +34,58 @@
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
       // 这是登录表单的数据绑定对象
       loginForm: {
         username: '',
-        password: '',
+        password: ''
       },
       // 这是表单的验证规则对象
       loginFormRules: {
         // 验证用户名
         username: [
-          { required: true, message: "请输入登录名称", trigger: "blur" },
+          { required: true, message: '请输入登录名称', trigger: 'blur' },
           {
             min: 3,
             max: 10,
-            message: "长度在 3 到 10 个字符",
-            trigger: "blur",
-          },
+            message: '长度在 3 到 10 个字符',
+            trigger: 'blur'
+          }
         ],
         password: [
-          { required: true, message: "请输入登录密码", trigger: "blur" },
+          { required: true, message: '请输入登录密码', trigger: 'blur' },
           {
             min: 6,
             max: 15,
-            message: "长度在 6 到 15 个字符",
-            trigger: "blur",
-          },
-        ],
-      },
-    };
+            message: '长度在 6 到 15 个字符',
+            trigger: 'blur'
+          }
+        ]
+      }
+    }
   },
   methods: {
     // 点击重置按钮
-    resetLoginForm() {
+    resetLoginForm () {
       // console.log(this);
-      this.$refs.loginFormRef.resetFields();
+      this.$refs.loginFormRef.resetFields()
     },
     // 登录
-    login() {
+    login () {
       this.$refs.loginFormRef.validate(async (valid) => {
         // console.log(valid);
-        if (!valid) return;
-        const { data: result } = await this.$http.get("login/login1.0", {params:this.loginForm});
-        if (!result.success) return this.$message.error(result.msg);
-        this.$message.success("登录成功");
-        //保存token到本地
-        window.sessionStorage.setItem("token", result.response.token);
-        this.$router.push("/home");
-      });
-    },
-  },
-};
+        if (!valid) return
+        const { data: result } = await this.$http.get('login/login1.0', { params: this.loginForm })
+        if (!result.success) return this.$message.error(result.msg)
+        this.$message.success('登录成功')
+        // 保存token到本地
+        window.sessionStorage.setItem('token', result.response.token)
+        this.$router.push('/home')
+      })
+    }
+  }
+}
 </script>
 <style lang="less" scoped>
 .login_container {

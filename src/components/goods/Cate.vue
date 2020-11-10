@@ -109,157 +109,155 @@
         <el-button type="primary" @click="addCate">确 定</el-button>
       </span>
     </el-dialog>
-    
   </div>
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
-      //查询条件
+      // 查询条件
       queryInfo: {
         type: 0,
         pagenum: 1,
-        pagesize: 3,
+        pagesize: 3
       },
-      //商品分类的数据列表，默认为空
+      // 商品分类的数据列表，默认为空
       catelist: [],
-      //总条数
+      // 总条数
       total: 0,
-      //为table指定列
+      // 为table指定列
       columns: [
         {
-          label: "分类名称",
-          prop: "cat_Name",
+          label: '分类名称',
+          prop: 'cat_Name'
         },
         {
-          label: "是否有效",
-          //表示，将当前列定义为模板列
-          type: "template",
-          //表示当前这一列使用模板名称
-          template: "isok",
+          label: '是否有效',
+          // 表示，将当前列定义为模板列
+          type: 'template',
+          // 表示当前这一列使用模板名称
+          template: 'isok'
         },
         {
-          label: "排序",
-          //表示，将当前列定义为模板列
-          type: "template",
-          //表示当前这一列使用模板名称
-          template: "order",
+          label: '排序',
+          // 表示，将当前列定义为模板列
+          type: 'template',
+          // 表示当前这一列使用模板名称
+          template: 'order'
         },
         {
-          label: "操作",
-          //表示，将当前列定义为模板列
-          type: "template",
-          //表示当前这一列使用模板名称
-          template: "opt",
-        },
+          label: '操作',
+          // 表示，将当前列定义为模板列
+          type: 'template',
+          // 表示当前这一列使用模板名称
+          template: 'opt'
+        }
       ],
-      //控制添加分类对话框显示与隐藏
+      // 控制添加分类对话框显示与隐藏
       addCateDialogVisible: false,
-      //添加分类表单对象
+      // 添加分类表单对象
       addCateForm: {
-        //将要添加的分类名称
-        cat_Name: "",
-        //父级分类的id
+        // 将要添加的分类名称
+        cat_Name: '',
+        // 父级分类的id
         cat_Pid: 0,
-        //分类等级 默认添加的是一级分类
-        cat_Level: 0,
+        // 分类等级 默认添加的是一级分类
+        cat_Level: 0
       },
-      //添加分类对象验证规则
+      // 添加分类对象验证规则
       addCateFormRules: {
         cat_Name: [
-          { required: true, message: "请输入分类名称", trigger: "blur" },
-        ],
+          { required: true, message: '请输入分类名称', trigger: 'blur' }
+        ]
       },
-      //父级分类数组
+      // 父级分类数组
       parentCateList: [],
-      //指定级联器配置对象
+      // 指定级联器配置对象
       cascaderProps: {
-        value: "cat_ID",
-        label: "cat_Name",
-        children: "children",
+        value: 'cat_ID',
+        label: 'cat_Name',
+        children: 'children'
       },
-      //选中父级id数组
-      selectedKeys: [],
-    };
+      // 选中父级id数组
+      selectedKeys: []
+    }
   },
-  created() {
-    this.getCateList();
+  created () {
+    this.getCateList()
   },
   methods: {
-    //获取商品分类列表
-    async getCateList() {
-      const { data: res } = await this.$http.get(`categories/categories`, {
-        params: this.queryInfo,
-      });
-      if (!res.success) return this.$message.error(res.msg);
-      this.catelist = res.response.data;
-      this.total = res.response.dataCount;
+    // 获取商品分类列表
+    async getCateList () {
+      const { data: res } = await this.$http.get('categories/categories', {
+        params: this.queryInfo
+      })
+      if (!res.success) return this.$message.error(res.msg)
+      this.catelist = res.response.data
+      this.total = res.response.dataCount
     },
-    //监听pagesize改变
-    handleSizeChange(newsize) {
-      this.queryInfo.pagesize = newsize;
-      this.getCateList();
+    // 监听pagesize改变
+    handleSizeChange (newsize) {
+      this.queryInfo.pagesize = newsize
+      this.getCateList()
     },
-    //监听pagenum改变
-    handleCurrentChange(newpage) {
-      this.queryInfo.pagenum = newpage;
-      this.getCateList();
+    // 监听pagenum改变
+    handleCurrentChange (newpage) {
+      this.queryInfo.pagenum = newpage
+      this.getCateList()
     },
-    //点击按钮显示添加分类对话框
-    showAddCateDialog() {
-      //先获取父级分类列表然后展示对话框
-      this.getParentCateList();
-      this.addCateDialogVisible = true;
+    // 点击按钮显示添加分类对话框
+    showAddCateDialog () {
+      // 先获取父级分类列表然后展示对话框
+      this.getParentCateList()
+      this.addCateDialogVisible = true
     },
-    //获取父级分类数据列表
-    async getParentCateList() {
-      const { data: res } = await this.$http.get(`categories/parentcates`);
-      if (!res.success) return this.$message.error(res.msg);
-      this.parentCateList = res.response;
+    // 获取父级分类数据列表
+    async getParentCateList () {
+      const { data: res } = await this.$http.get('categories/parentcates')
+      if (!res.success) return this.$message.error(res.msg)
+      this.parentCateList = res.response
     },
-    //选择项发生变化触发这个函数
-    parentCateChanged() {
-      //如果selectedKeys数组中的length 大于0，证明选中的父级分类
-      //反之，就说明没有选中任何父级分类
+    // 选择项发生变化触发这个函数
+    parentCateChanged () {
+      // 如果selectedKeys数组中的length 大于0，证明选中的父级分类
+      // 反之，就说明没有选中任何父级分类
       if (this.selectedKeys.length > 0) {
-        //父级分类的id
+        // 父级分类的id
         this.addCateForm.cat_Pid = this.selectedKeys[
           this.selectedKeys.length - 1
-        ];
-        //为当前分类的等级赋值
-        this.addCateForm.cat_Level = this.selectedKeys.length;
-        return;
+        ]
+        // 为当前分类的等级赋值
+        this.addCateForm.cat_Level = this.selectedKeys.length
       } else {
-        //父级分类的id
-        this.addCateForm.cat_Pid = 0;
-        //为当前分类的等级赋值
-        this.addCateForm.cat_Level = 0;
+        // 父级分类的id
+        this.addCateForm.cat_Pid = 0
+        // 为当前分类的等级赋值
+        this.addCateForm.cat_Level = 0
       }
     },
-    //添加分类
-    addCate() {
+    // 添加分类
+    addCate () {
       this.$refs.addCateFormRef.validate(async (valid) => {
-        if (!valid) return;
+        if (!valid) return
         const { data: res } = await this.$http.post(
-          `categories/addcate`,
+          'categories/addcate',
           this.addCateForm
-        );
-        if (!res.success) return this.$message.error(res.msg);
-        this.$message.success(res.msg);
-        this.getCateList();
-        this.addCateDialogVisible = false;
-      });
+        )
+        if (!res.success) return this.$message.error(res.msg)
+        this.$message.success(res.msg)
+        this.getCateList()
+        this.addCateDialogVisible = false
+      })
     },
-    //监听添加分类对话框关闭事件,重置表单
-    addCateDialogClosed() {
-      this.$refs.addCateFormRef.resetFields();
-      this.selectedKeys = [];
-      this.addCateForm.cat_Level = 0;
-      this.addCateForm.cat_Pid = 0;
-    },
-  },
-};
+    // 监听添加分类对话框关闭事件,重置表单
+    addCateDialogClosed () {
+      this.$refs.addCateFormRef.resetFields()
+      this.selectedKeys = []
+      this.addCateForm.cat_Level = 0
+      this.addCateForm.cat_Pid = 0
+    }
+  }
+}
 </script>
 <style lang="less" scoped>
 .treeTable {

@@ -66,33 +66,33 @@
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
-      //搜索内容
+      // 搜索内容
       queryInfo: {
-        key: '',
+        key: ''
       },
-      //权限列表
-      permissionlist: [],
-    };
+      // 权限列表
+      permissionlist: []
+    }
   },
-  created() {
-    //获取权限列表
-    this.getPermissionList();
+  created () {
+    // 获取权限列表
+    this.getPermissionList()
   },
   methods: {
-    //添加权限对话框
-    showAddDialog() {},
-    //获取所有的权限列表
-    async getPermissionList() {
-      const { data: res } = await this.$http.get(`permissions/trees`, {
-        params: { key: this.queryInfo.key },
-      });
-      if (!res.success) return this.$message.error(res.msg);
-      this.permissionlist = res.response.data;
-    },
-  },
-};
+    // 添加权限对话框
+    showAddDialog () {},
+    // 获取所有的权限列表
+    async getPermissionList () {
+      const { data: res } = await this.$http.get('permissions/trees', {
+        params: { key: this.queryInfo.key }
+      })
+      if (!res.success) return this.$message.error(res.msg)
+      this.permissionlist = res.response.data
+    }
+  }
+}
 </script>
 <style lang="less" scoped>
 </style>

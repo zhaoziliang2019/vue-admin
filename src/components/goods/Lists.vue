@@ -75,71 +75,71 @@
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
-      //查询参数对象
+      // 查询参数对象
       queryInfo: {
-        query: "",
+        query: '',
         pagenum: 1,
-        pagesize: 5,
+        pagesize: 5
       },
-      //商品列表
+      // 商品列表
       goodslist: [],
-      //总数据条数
-      total: 0,
-    };
-  },
-  created() {
-    this.getGoodsList();
-  },
-  methods: {
-    //获取商品列表
-    async getGoodsList() {
-      const { data: res } = await this.$http.get(`goodslists/list`, {
-        params: this.queryInfo,
-      });
-      if (!res.success) return this.$message.error(res.msg);
-      this.$message.success(res.msg);
-      console.log(res)
-      this.goodslist = res.response.data;
-      this.total = res.response.dataCount;
-    },
-    //
-    handleSizeChange(newSize){
-        this.queryInfo.pagesize=newSize
-        this.getGoodsList()
-    },
-    handleCurrentChange(newPage){
-        this.queryInfo.pagenum=newPage
-        this.getGoodsList()
-    },
-    //根据id删除商品
-    removeById(id){
-        this.$confirm('此操作将永久删除该商品, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(async () => {
-        const {data:res}=await this.$http.delete(`goodslists/delete`,{params:{id:id}})
-        if(!res.msg) return this.$message.error(res.msg)
-        this.$message({
-            type: 'success',
-            message: '删除成功!'
-          });
-          this.getGoodsList()
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          });          
-        });
-    },
-    //添加商品新的跳转页
-    goAddPage(){
-        this.$router.push('/goods/add')
+      // 总数据条数
+      total: 0
     }
   },
-};
+  created () {
+    this.getGoodsList()
+  },
+  methods: {
+    // 获取商品列表
+    async getGoodsList () {
+      const { data: res } = await this.$http.get('goodslists/list', {
+        params: this.queryInfo
+      })
+      if (!res.success) return this.$message.error(res.msg)
+      this.$message.success(res.msg)
+      console.log(res)
+      this.goodslist = res.response.data
+      this.total = res.response.dataCount
+    },
+    //
+    handleSizeChange (newSize) {
+      this.queryInfo.pagesize = newSize
+      this.getGoodsList()
+    },
+    handleCurrentChange (newPage) {
+      this.queryInfo.pagenum = newPage
+      this.getGoodsList()
+    },
+    // 根据id删除商品
+    removeById (id) {
+      this.$confirm('此操作将永久删除该商品, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async () => {
+        const { data: res } = await this.$http.delete('goodslists/delete', { params: { id: id } })
+        if (!res.msg) return this.$message.error(res.msg)
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        })
+        this.getGoodsList()
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    },
+    // 添加商品新的跳转页
+    goAddPage () {
+      this.$router.push('/goods/add')
+    }
+  }
+}
 </script>
 <style lang="less" scoped>
 </style>

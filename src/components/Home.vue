@@ -63,43 +63,43 @@
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
-      //左侧菜单数据
+      // 左侧菜单数据
       menulist: [],
-      //是否折叠
+      // 是否折叠
       isCollapse: false,
-      //被激活的链接地址
-      activePath:''
-    };
-  },
-  created() {
-    this.getMenuList();
-    this.activePath=window.sessionStorage.getItem('activePath');
-  },
-  methods: {
-    logout() {
-      window.sessionStorage.clear();
-      this.$router.push("/login");
-    },
-    //获取所有的菜单
-    async getMenuList() {
-      const { data: res } = await this.$http.get("/menus/get");
-      //console.log(res);
-      if (!res.success) return this.$message.error(res.msg);
-      this.menulist = res.response.children;
-    },
-    //点击按钮，切换菜单折叠与展开
-    toggleCollapse() {
-      this.isCollapse = !this.isCollapse;
-    },
-    //保存链接的激活状态
-    saveNavState(activePath){
-        window.sessionStorage.setItem('activePath',activePath);
-        this.activePath=activePath;
+      // 被激活的链接地址
+      activePath: ''
     }
   },
-};
+  created () {
+    this.getMenuList()
+    this.activePath = window.sessionStorage.getItem('activePath')
+  },
+  methods: {
+    logout () {
+      window.sessionStorage.clear()
+      this.$router.push('/login')
+    },
+    // 获取所有的菜单
+    async getMenuList () {
+      const { data: res } = await this.$http.get('/menus/get')
+      // console.log(res);
+      if (!res.success) return this.$message.error(res.msg)
+      this.menulist = res.response.children
+    },
+    // 点击按钮，切换菜单折叠与展开
+    toggleCollapse () {
+      this.isCollapse = !this.isCollapse
+    },
+    // 保存链接的激活状态
+    saveNavState (activePath) {
+      window.sessionStorage.setItem('activePath', activePath)
+      this.activePath = activePath
+    }
+  }
+}
 </script>
 <style lang="less" scoped>
 .home-container {

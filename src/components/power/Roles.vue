@@ -189,222 +189,222 @@
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
-      //添加角色对话框显示与隐藏
+      // 添加角色对话框显示与隐藏
       addDialogVisible: false,
-      //添加角色表单数据
+      // 添加角色表单数据
       addForm: {
-        rName: "",
-        rDescription: "",
+        rName: '',
+        rDescription: ''
       },
-      //添加角色的验证规则对象
+      // 添加角色的验证规则对象
       addFormRules: {
         rName: [
-          { required: true, message: "请输入角色名", trigger: "blur" },
-          { min: 3, max: 100, message: "长度在 3~100 个字符", trigger: "blur" },
+          { required: true, message: '请输入角色名', trigger: 'blur' },
+          { min: 3, max: 100, message: '长度在 3~100 个字符', trigger: 'blur' }
         ],
         rDescription: [
-          { required: true, message: "请输入角色的描述", trigger: "blur" },
-          { min: 3, max: 100, message: "长度在 3~100 个字符", trigger: "blur" },
-        ],
+          { required: true, message: '请输入角色的描述', trigger: 'blur' },
+          { min: 3, max: 100, message: '长度在 3~100 个字符', trigger: 'blur' }
+        ]
       },
-      //编辑角色对话框显示与隐藏
+      // 编辑角色对话框显示与隐藏
       editdialogVisible: false,
-      //编辑角色表单数据
+      // 编辑角色表单数据
       editForm: {},
-      //编辑角色的验证规则对象
+      // 编辑角色的验证规则对象
       editFormRules: {
         rDescription: [
-          { required: true, message: "请输入角色的描述", trigger: "blur" },
-          { min: 3, max: 100, message: "长度在 3~100 个字符", trigger: "blur" },
+          { required: true, message: '请输入角色的描述', trigger: 'blur' },
+          { min: 3, max: 100, message: '长度在 3~100 个字符', trigger: 'blur' }
         ],
         rIsDelete: [
-          { required: true, message: "请选中角色状态", trigger: "blur" },
-        ],
+          { required: true, message: '请选中角色状态', trigger: 'blur' }
+        ]
       },
-      //所有角色列表
+      // 所有角色列表
       rolelist: [],
-      //控制分配权限的显示与隐藏
+      // 控制分配权限的显示与隐藏
       setPermissionDialogVisible: false,
-      //所有权限
+      // 所有权限
       rolemenulist: [],
-      //树形控件属性绑定对象
+      // 树形控件属性绑定对象
       treeProps: {
-        label: "name",
-        children: "children",
+        label: 'name',
+        children: 'children'
       },
-      //默认选中节点Id的值
+      // 默认选中节点Id的值
       defKeys: [],
-      //获取当前选中的角色id
-      rolemenuinfo:{
-      rID: 0,
-      mIDs:''
+      // 获取当前选中的角色id
+      rolemenuinfo: {
+        rID: 0,
+        mIDs: ''
       }
-    };
+    }
   },
-  created() {
-    this.getRoleList();
+  created () {
+    this.getRoleList()
   },
   methods: {
-    //添加角色
-    addRole() {
+    // 添加角色
+    addRole () {
       this.$refs.addFormRef.validate(async (valid) => {
-        //console.log(valid);
-        if (!valid) return;
+        // console.log(valid);
+        if (!valid) return
         const { data: res } = await this.$http.post(
-          "roles/addrole",
+          'roles/addrole',
           this.addForm
-        );
-        if (!res.success) return this.$message.error(res.msg);
-        this.$message.success("添加角色成功！");
-        //隐藏添加角色的对话框
-        this.addDialogVisible = false;
-        //重新获取角色列表
-        this.getRoleList();
-      });
+        )
+        if (!res.success) return this.$message.error(res.msg)
+        this.$message.success('添加角色成功！')
+        // 隐藏添加角色的对话框
+        this.addDialogVisible = false
+        // 重新获取角色列表
+        this.getRoleList()
+      })
     },
-    //监听添加角色对话框的关闭事件
-    addDialogClosed() {
-      this.$refs.addFormRef.resetFields();
+    // 监听添加角色对话框的关闭事件
+    addDialogClosed () {
+      this.$refs.addFormRef.resetFields()
     },
-    //编辑角色显示对话框
-    async showEditDialog(id) {
-      const { data: res } = await this.$http.get(`roles/getrole`, {
-        params: { rid: id },
-      });
-      if (!res.success) return this.$message.error(res.msg);
-      this.editForm = res.response;
-      this.editdialogVisible = true;
+    // 编辑角色显示对话框
+    async showEditDialog (id) {
+      const { data: res } = await this.$http.get('roles/getrole', {
+        params: { rid: id }
+      })
+      if (!res.success) return this.$message.error(res.msg)
+      this.editForm = res.response
+      this.editdialogVisible = true
     },
-    //编辑保存角色
-    editRoleInfo() {
+    // 编辑保存角色
+    editRoleInfo () {
       this.$refs.editFormRef.validate(async (valid) => {
-        if (!valid) return;
+        if (!valid) return
         const { data: res } = await this.$http.put(
-          `roles/updaterole`,
+          'roles/updaterole',
           this.editForm
-        );
-        if (!res.success) return this.$message.error(res.msg);
-        //关闭对话框
-        this.editdialogVisible = false;
-        //刷新数据列表
-        this.getRoleList();
-        //提示修改成功
-        this.$message.success("更新角色信息成功！");
-      });
+        )
+        if (!res.success) return this.$message.error(res.msg)
+        // 关闭对话框
+        this.editdialogVisible = false
+        // 刷新数据列表
+        this.getRoleList()
+        // 提示修改成功
+        this.$message.success('更新角色信息成功！')
+      })
     },
-    //监听修改角色对话框的关闭事件
-    editDialogClosed() {
-      this.$refs.editFormRef.resetFields();
+    // 监听修改角色对话框的关闭事件
+    editDialogClosed () {
+      this.$refs.editFormRef.resetFields()
     },
-    //删除角色
-    removeRoleById(id) {
-      this.$confirm("此操作将永久删除该角色, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
+    // 删除角色
+    removeRoleById (id) {
+      this.$confirm('此操作将永久删除该角色, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
         .then(async () => {
-          const { data: res } = await this.$http.delete(`roles/delete`, {
-            params: { rid: id },
-          });
-          if (!res.success) return this.$message.error(res.msg);
+          const { data: res } = await this.$http.delete('roles/delete', {
+            params: { rid: id }
+          })
+          if (!res.success) return this.$message.error(res.msg)
           this.$message({
-            type: "success",
-            message: "删除成功!",
-          });
-          //刷新角色列表
-          this.getRoleList();
+            type: 'success',
+            message: '删除成功!'
+          })
+          // 刷新角色列表
+          this.getRoleList()
         })
         .catch(() => {
           this.$message({
-            type: "info",
-            message: "已取消删除",
-          });
-        });
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
     },
-    //获取所有角色的列表
-    async getRoleList() {
-      const { data: res } = await this.$http.get("roles/rolelist");
-      if (!res.success) return this.$message.error(res.msg);
-      this.rolelist = res.response;
+    // 获取所有角色的列表
+    async getRoleList () {
+      const { data: res } = await this.$http.get('roles/rolelist')
+      if (!res.success) return this.$message.error(res.msg)
+      this.rolelist = res.response
     },
-    //根据id删除对应的权限
-    removeRightById(role, id) {
-      //弹框是否删除
-      this.$confirm("此操作将永久删除该权限, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
+    // 根据id删除对应的权限
+    removeRightById (role, id) {
+      // 弹框是否删除
+      this.$confirm('此操作将永久删除该权限, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
         .then(async () => {
-          const { data: res } = await this.$http.delete(`roles/deletermp`, {
-            params: { rid: role.rID, mid: id },
-          });
-          if (!res.success) return this.$message.error(res.msg);
+          const { data: res } = await this.$http.delete('roles/deletermp', {
+            params: { rid: role.rID, mid: id }
+          })
+          if (!res.success) return this.$message.error(res.msg)
           this.$message({
-            type: "success",
-            message: "删除成功!",
-          });
-          role.children = res.response[0].children;
-          //console.log(role);
-          console.log(res.response[0].children);
+            type: 'success',
+            message: '删除成功!'
+          })
+          role.children = res.response[0].children
+          // console.log(role);
+          console.log(res.response[0].children)
         })
         .catch(() => {
           this.$message({
-            type: "info",
-            message: "已取消删除",
-          });
-        });
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
     },
-    //格式化时间
+    // 格式化时间
     formatDateTime: function (row, column, cellValue, index) {
-      return cellValue.replace("T", " ");
+      return cellValue.replace('T', ' ')
     },
-    //展示分配权限对话框
-    async showSetPermissionDialog(role) {
-      this.rolemenuinfo.rID = role.rID;
-      //获取所有的权限列表
-      const { data: res } = await this.$http.get("roles/tree");
-      if (!res.success) return this.$message.error(res.msg);
-      this.rolemenulist = res.response;
-      //获取三级节点的id
-      this.getLeafKeys(role, this.defKeys);
-      this.setPermissionDialogVisible = true;
-      console.log(role);
+    // 展示分配权限对话框
+    async showSetPermissionDialog (role) {
+      this.rolemenuinfo.rID = role.rID
+      // 获取所有的权限列表
+      const { data: res } = await this.$http.get('roles/tree')
+      if (!res.success) return this.$message.error(res.msg)
+      this.rolemenulist = res.response
+      // 获取三级节点的id
+      this.getLeafKeys(role, this.defKeys)
+      this.setPermissionDialogVisible = true
+      console.log(role)
     },
-    //通过递归的形式，获取角色下所有三级权限的id，并保存到defKeys数组中
-    getLeafKeys(node, arr) {
-      //如果当前node节点不包含children属性，则是三级节点
+    // 通过递归的形式，获取角色下所有三级权限的id，并保存到defKeys数组中
+    getLeafKeys (node, arr) {
+      // 如果当前node节点不包含children属性，则是三级节点
       if (!node.children) {
-        return arr.push(node.mID);
+        return arr.push(node.mID)
       }
       node.children.forEach((item) => {
-        this.getLeafKeys(item, arr);
-      });
+        this.getLeafKeys(item, arr)
+      })
     },
-    //监听分配权限对话框的关闭事件
-    setPermissionDialogClosed() {
-      this.defKeys = [];
+    // 监听分配权限对话框的关闭事件
+    setPermissionDialogClosed () {
+      this.defKeys = []
     },
-    //点击为角色分配权限
-    async setRoleMenu() {
+    // 点击为角色分配权限
+    async setRoleMenu () {
       const keys = [
         ...this.$refs.treeRef.getCheckedKeys(),
-        ...this.$refs.treeRef.getHalfCheckedKeys(),
-      ];
-      this.rolemenuinfo.mIDs=keys.join(',');
-      const { data: res } = await this.$http.post(`roles/setrolemenu`, this.rolemenuinfo);
-      if (!res.success) return this.$message.error(res.msg);
-      this.$message.success("分配权限成功！");
-      //获取权限列表
-      this.getRoleList();
-      //关闭分配权限对话框
-      this.setPermissionDialogVisible=false;
-    },
-  },
-};
+        ...this.$refs.treeRef.getHalfCheckedKeys()
+      ]
+      this.rolemenuinfo.mIDs = keys.join(',')
+      const { data: res } = await this.$http.post('roles/setrolemenu', this.rolemenuinfo)
+      if (!res.success) return this.$message.error(res.msg)
+      this.$message.success('分配权限成功！')
+      // 获取权限列表
+      this.getRoleList()
+      // 关闭分配权限对话框
+      this.setPermissionDialogVisible = false
+    }
+  }
+}
 </script>
 <style lang="less" scoped>
 .el-tag {

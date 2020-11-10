@@ -26,7 +26,7 @@
         </el-col>
       </el-row>
       <!--订单列表区域-->
-      <el-table :data="orderList" boder stripe>
+      <el-table :data="orderList"  border stripe>
         <el-table-column type="index"></el-table-column>
         <el-table-column label="订单编号" prop="order_number"></el-table-column>
         <el-table-column label="订单价格" prop="order_price"></el-table-column>
@@ -96,6 +96,8 @@
         <el-form-item label="省市区/县" prop="address1">
           <el-cascader
             :options="cityData"
+            :props="{
+            expandTrigger: 'hover',}"
             change-on-select
             v-model="addressForm.address1"
           ></el-cascader>
@@ -127,86 +129,86 @@
   </div>
 </template>
 <script>
-import cityData from "./citydata";
+import cityData from './citydata'
 export default {
-  data() {
+  data () {
     return {
       queryInfo: {
-        query: "",
+        query: '',
         pagenum: 1,
-        pagesize: 5,
+        pagesize: 5
       },
-      //订单列表
+      // 订单列表
       orderList: [],
-      //订单总条数
+      // 订单总条数
       total: 0,
-      //修改地址对话框
+      // 修改地址对话框
       addressVisible: false,
-      //修改地址对象
+      // 修改地址对象
       addressForm: {
         address1: [],
-        address2: "",
+        address2: ''
       },
-      //验证规则对象
+      // 验证规则对象
       addressFormRules: {
         address1: [
-          { required: true, message: "请选择省市区/县", trigger: "blur" },
+          { required: true, message: '请选择省市区/县', trigger: 'blur' }
         ],
         address2: [
-          { required: true, message: "请填写详细地址", trigger: "blur" },
-        ],
+          { required: true, message: '请填写详细地址', trigger: 'blur' }
+        ]
       },
       cityData,
       progressVisible: false,
-      progressInfo: [],
-    };
+      progressInfo: []
+    }
   },
-  created() {
-    this.getOrderList();
+  created () {
+    this.getOrderList()
   },
   methods: {
-    async getOrderList() {
-      const { data: res } = await this.$http.get(`orders/list`, {
-        params: this.queryInfo,
-      });
-      if (!res.success) return this.$message.error(res.msg);
-      this.orderList = res.response.data;
-      this.total = res.response.dataCount;
+    async getOrderList () {
+      const { data: res } = await this.$http.get('orders/list', {
+        params: this.queryInfo
+      })
+      if (!res.success) return this.$message.error(res.msg)
+      this.orderList = res.response.data
+      this.total = res.response.dataCount
     },
-    //格式化是否发货
-    //格式化性别列
+    // 格式化是否发货
+    // 格式化性别列
     formatterIsSend: function (row, column) {
-      return row.is_send == 1 ? "是" : "否";
+      return row.is_send == 1 ? '是' : '否'
     },
-    //分页页面显示多少条切换事件
-    handleSizeChange(newsize) {
-      this.queryInfo.pagesize = newsize;
-      this.getOrderList();
+    // 分页页面显示多少条切换事件
+    handleSizeChange (newsize) {
+      this.queryInfo.pagesize = newsize
+      this.getOrderList()
     },
-    //分页页码切换事件
-    handleCurrentChange(newnum) {
-      this.queryInfo.pagenum = newnum;
-      this.getOrderList();
+    // 分页页码切换事件
+    handleCurrentChange (newnum) {
+      this.queryInfo.pagenum = newnum
+      this.getOrderList()
     },
-    //编辑界面对话框
-    showEditDialog() {
-      this.addressVisible = true;
+    // 编辑界面对话框
+    showEditDialog () {
+      this.addressVisible = true
     },
-    //监听编辑对话框关闭事件
-    addressClosed() {
-      this.$refs.addressFormRef.resetFields();
+    // 监听编辑对话框关闭事件
+    addressClosed () {
+      this.$refs.addressFormRef.resetFields()
     },
-    //显示位置对话框
-    async showProgressBox(num) {
-      const { data: res } = await this.$http.get(`logisticsprogresss/kuaidi`, {
-        params: { order_number: num },
-      });
-      if (!res.success) return this.$message.error(res.msg);
-      this.progressInfo = res.response;
-      this.progressVisible = true;
-    },
-  },
-};
+    // 显示位置对话框
+    async showProgressBox (num) {
+      const { data: res } = await this.$http.get('logisticsprogresss/kuaidi', {
+        params: { order_number: num }
+      })
+      if (!res.success) return this.$message.error(res.msg)
+      this.progressInfo = res.response
+      this.progressVisible = true
+    }
+  }
+}
 </script>
 <style lang="less" scoped>
 @import '../../plugins/timeline/timeline.css';

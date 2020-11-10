@@ -48,35 +48,35 @@
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
-      //获取用户列表参数对象
+      // 获取用户列表参数对象
       queryInfo: {
-        key: "",
-        //当前的页数
+        key: '',
+        // 当前的页数
         page: 1,
-        pagesize: 10,
+        pagesize: 10
       },
-      //接口列表
-      interfaceList: [],
-    };
+      // 接口列表
+      interfaceList: []
+    }
   },
-  created() {
-    //获取所有的接口信息
-    this.getInterfaceList();
+  created () {
+    // 获取所有的接口信息
+    this.getInterfaceList()
   },
   methods: {
-    //获取接口列表
-    async getInterfaceList() {
-      const { data: res } = await this.$http.get("interfaces/get", {
-        params: this.queryInfo,
-      });
-      if (!res.success) return this.$message.error(res.msg);
-      this.interfaceList = res.response.data;
-      console.log(res);
-    },
-  },
-};
+    // 获取接口列表
+    async getInterfaceList () {
+      const { data: res } = await this.$http.get('interfaces/get', {
+        params: this.queryInfo
+      })
+      if (!res.success) return this.$message.error(res.msg)
+      this.interfaceList = res.response.data
+      console.log(res)
+    }
+  }
+}
 </script>
 <style lang="less" scoped>
 </style>

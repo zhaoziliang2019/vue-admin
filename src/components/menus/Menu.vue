@@ -169,158 +169,158 @@
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
-      //菜单列表
+      // 菜单列表
       menulist: [],
-      //添加菜单对话框显示与隐藏
+      // 添加菜单对话框显示与隐藏
       addDialogVisible: false,
-      //添加菜单对象
+      // 添加菜单对象
       addForm: {
-        arrPid: [],
+        arrPid: []
       },
-      //父级菜单列表
+      // 父级菜单列表
       moptions: [],
-      //添加菜单验证规则对象
+      // 添加菜单验证规则对象
       addFormRules: {
-        mPid: [{ required: true, message: "请输入菜单名", trigger: "blur" }],
+        mPid: [{ required: true, message: '请输入菜单名', trigger: 'blur' }],
         mName: [
-          { required: true, message: "请输入菜单名", trigger: "blur" },
-          { min: 3, max: 10, message: "长度在 3~10 个字符", trigger: "blur" },
+          { required: true, message: '请输入菜单名', trigger: 'blur' },
+          { min: 3, max: 10, message: '长度在 3~10 个字符', trigger: 'blur' }
         ],
-        mPath: [{ required: true, message: "请输入路由路径", trigger: "blur" }],
+        mPath: [{ required: true, message: '请输入路由路径', trigger: 'blur' }],
         mOrderSort: [
-          { required: true, message: "请输入排序", trigger: "blur" },
+          { required: true, message: '请输入排序', trigger: 'blur' }
         ],
-        mIcon: [{ required: true, message: "请输入排序", trigger: "blur" }],
+        mIcon: [{ required: true, message: '请输入排序', trigger: 'blur' }],
         mDescription: [
-          { required: true, message: "请输入排序", trigger: "blur" },
-          { min: 3, max: 100, message: "长度在 3~100 个字符", trigger: "blur" },
-        ],
+          { required: true, message: '请输入排序', trigger: 'blur' },
+          { min: 3, max: 100, message: '长度在 3~100 个字符', trigger: 'blur' }
+        ]
       },
-      //编辑菜单对话框显示与隐藏
+      // 编辑菜单对话框显示与隐藏
       editDialogVisible: false,
-      //编辑菜单对象
+      // 编辑菜单对象
       editForm: {},
-      //编辑菜单验证规则对象
+      // 编辑菜单验证规则对象
       editFormRules: {
-        mPid: [{ required: true, message: "请输入菜单名", trigger: "blur" }],
-        mPath: [{ required: true, message: "请输入路由路径", trigger: "blur" }],
+        mPid: [{ required: true, message: '请输入菜单名', trigger: 'blur' }],
+        mPath: [{ required: true, message: '请输入路由路径', trigger: 'blur' }],
         mOrderSort: [
-          { required: true, message: "请输入排序", trigger: "blur" },
+          { required: true, message: '请输入排序', trigger: 'blur' }
         ],
-        mIcon: [{ required: true, message: "请输入排序", trigger: "blur" }],
+        mIcon: [{ required: true, message: '请输入排序', trigger: 'blur' }],
         mDescription: [
-          { required: true, message: "请输入排序", trigger: "blur" },
-          { min: 3, max: 100, message: "长度在 3~100 个字符", trigger: "blur" },
-        ],
-      },
-    };
-  },
-  created() {
-    this.getMenuList();
-  },
-  methods: {
-    //获取所有的菜单列表
-    async getMenuList() {
-      const { data: res } = await this.$http.get(`menus/list`);
-      if (!res.success) return this.$message.error(res.msg);
-      this.menulist = res.response;
-    },
-    //格式化时间
-    formatDateTime: function (row, column, cellValue, index) {
-      return cellValue.replace("T", " ");
-    },
-    //监听关闭添加菜单对话框事件
-    addDialogClosed() {
-      this.$refs.addFormRef.resetFields();
-    },
-    //显示菜单添加对话框
-    async showAddDialog() {
-      this.addDialogVisible = true;
-      const { data: res } = await this.$http.get(`menus/rootlist`);
-      if (!res.success) return this.$message.error(res.msg);
-      this.moptions = res.response.children;
-    },
-    //添加菜单
-    addMenu() {
-      this.$refs.addFormRef.validate(async (valid) => {
-        if (!valid) return;
-        this.addForm.mPid = this.addForm.arrPid.pop();
-        //不知道什么原因int数字老是转成string导致无法进去接口
-        this.addForm.mOrderSort = parseInt(this.addForm.mOrderSort);
-        const { data: res } = await this.$http.post(
-          "menus/addmenu",
-          this.addForm
-        );
-        if (!res.success) return this.$message.error(res.msg);
-        this.$message.success("添加菜单成功！");
-        //隐藏添加菜单对话框
-        this.addDialogVisible = false;
-        //重新获取菜单列表数据
-        this.getMenuList();
-      });
-    },
-    //显示编辑菜单对话框
-    async showEditDialog(id) {
-      //根据id获取菜单信息
-      const { data: res } = await this.$http.get(`menus/menu`, {
-        params: { mid: id },
-      });
-      if (!res.success) return this.$message.error(res.msg);
-      this.editForm = res.response;
-      console.log(this.editForm);
-      //父级菜单选择列表
-      const { data: re } = await this.$http.get(`menus/rootlist`);
-      if (!re.success) return this.$message.error(re.msg);
-      this.moptions = re.response.children;
-
-      this.editDialogVisible = true;
-    },
-    //监听关闭编辑菜单事件
-    editDialogClosed() {
-      this.$refs.editFormRef.resetFields();
-    },
-    //编辑菜单
-    editMenuInfo() {
-      this.$refs.editFormRef.validate(async (valid) => {
-        if (!valid) return;
-        this.editForm.mPid = this.editForm.arrPid.pop();
-        const { data: res } = await this.$http.put(
-          `menus/updatemenu`,
-          this.editForm
-        );
-        if (!res.success) return this.$message.error(res.msg);
-        this.editDialogVisible = false;
-        //刷新菜单列表
-        this.getMenuList();
-        this.$message.success("更新菜单成功!");
-      });
-    },
-    //删除菜单
-    removeMenuById(id){
-      this.$confirm('此操作将永久删除该菜单, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then( async () => {
-        const {data:res}=await this.$http.delete(`menus/delete`,{params:{id:id}})
-         if(!res.success) return this.$message.error(res.msg)
-         this.$message({
-            type: 'success',
-            message: '删除成功!'
-          });
-          //刷新菜单列表
-          this.getMenuList()
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          });          
-        });
+          { required: true, message: '请输入排序', trigger: 'blur' },
+          { min: 3, max: 100, message: '长度在 3~100 个字符', trigger: 'blur' }
+        ]
+      }
     }
   },
-};
+  created () {
+    this.getMenuList()
+  },
+  methods: {
+    // 获取所有的菜单列表
+    async getMenuList () {
+      const { data: res } = await this.$http.get('menus/list')
+      if (!res.success) return this.$message.error(res.msg)
+      this.menulist = res.response
+    },
+    // 格式化时间
+    formatDateTime: function (row, column, cellValue, index) {
+      return cellValue.replace('T', ' ')
+    },
+    // 监听关闭添加菜单对话框事件
+    addDialogClosed () {
+      this.$refs.addFormRef.resetFields()
+    },
+    // 显示菜单添加对话框
+    async showAddDialog () {
+      this.addDialogVisible = true
+      const { data: res } = await this.$http.get('menus/rootlist')
+      if (!res.success) return this.$message.error(res.msg)
+      this.moptions = res.response.children
+    },
+    // 添加菜单
+    addMenu () {
+      this.$refs.addFormRef.validate(async (valid) => {
+        if (!valid) return
+        this.addForm.mPid = this.addForm.arrPid.pop()
+        // 不知道什么原因int数字老是转成string导致无法进去接口
+        this.addForm.mOrderSort = parseInt(this.addForm.mOrderSort)
+        const { data: res } = await this.$http.post(
+          'menus/addmenu',
+          this.addForm
+        )
+        if (!res.success) return this.$message.error(res.msg)
+        this.$message.success('添加菜单成功！')
+        // 隐藏添加菜单对话框
+        this.addDialogVisible = false
+        // 重新获取菜单列表数据
+        this.getMenuList()
+      })
+    },
+    // 显示编辑菜单对话框
+    async showEditDialog (id) {
+      // 根据id获取菜单信息
+      const { data: res } = await this.$http.get('menus/menu', {
+        params: { mid: id }
+      })
+      if (!res.success) return this.$message.error(res.msg)
+      this.editForm = res.response
+      console.log(this.editForm)
+      // 父级菜单选择列表
+      const { data: re } = await this.$http.get('menus/rootlist')
+      if (!re.success) return this.$message.error(re.msg)
+      this.moptions = re.response.children
+
+      this.editDialogVisible = true
+    },
+    // 监听关闭编辑菜单事件
+    editDialogClosed () {
+      this.$refs.editFormRef.resetFields()
+    },
+    // 编辑菜单
+    editMenuInfo () {
+      this.$refs.editFormRef.validate(async (valid) => {
+        if (!valid) return
+        this.editForm.mPid = this.editForm.arrPid.pop()
+        const { data: res } = await this.$http.put(
+          'menus/updatemenu',
+          this.editForm
+        )
+        if (!res.success) return this.$message.error(res.msg)
+        this.editDialogVisible = false
+        // 刷新菜单列表
+        this.getMenuList()
+        this.$message.success('更新菜单成功!')
+      })
+    },
+    // 删除菜单
+    removeMenuById (id) {
+      this.$confirm('此操作将永久删除该菜单, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async () => {
+        const { data: res } = await this.$http.delete('menus/delete', { params: { id: id } })
+        if (!res.success) return this.$message.error(res.msg)
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        })
+        // 刷新菜单列表
+        this.getMenuList()
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    }
+  }
+}
 </script>
 <style lang="less" scoped>
 </style>

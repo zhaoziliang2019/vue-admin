@@ -131,172 +131,172 @@
   </div>
 </template>
 <script>
-import _ from "lodash";
+import _ from 'lodash'
 export default {
-  data() {
+  data () {
     return {
-      activeIndex: "0",
-      //添加商品的表单数据对象
+      activeIndex: '0',
+      // 添加商品的表单数据对象
       addForm: {
-        goods_Name: "",
+        goods_Name: '',
         goods_Price: 0,
         goods_Weight: 0,
         goods_Number: 0,
-        //商品所属的分类数组
+        // 商品所属的分类数组
         goods_Cat: [],
-        //图片数组
+        // 图片数组
         goods_Pics: [],
-        //商品介绍
-        goods_Introduce: "",
-        //参数列表
-        goods_Attrs: [],
+        // 商品介绍
+        goods_Introduce: '',
+        // 参数列表
+        goods_Attrs: []
       },
-      //表单验证规则对象
+      // 表单验证规则对象
       addFormRules: {
         goods_Name: [
-          { required: true, message: "请输入商品名称", trigger: "blur" },
+          { required: true, message: '请输入商品名称', trigger: 'blur' }
         ],
         goods_Price: [
-          { required: true, message: "请输入商品价格", trigger: "blur" },
+          { required: true, message: '请输入商品价格', trigger: 'blur' }
         ],
         goods_Weight: [
-          { required: true, message: "请输入商品重量", trigger: "blur" },
+          { required: true, message: '请输入商品重量', trigger: 'blur' }
         ],
         goods_Number: [
-          { required: true, message: "请输入商品数量", trigger: "blur" },
+          { required: true, message: '请输入商品数量', trigger: 'blur' }
         ],
         goods_Cat: [
-          { required: true, message: "请选择商品分类", trigger: "blur" },
-        ],
+          { required: true, message: '请选择商品分类', trigger: 'blur' }
+        ]
       },
-      //商品分类列表
+      // 商品分类列表
       catelist: [],
-      //动态参数列表数据
+      // 动态参数列表数据
       manyTableData: [],
-      //静态属性列表数据
+      // 静态属性列表数据
       onlyTableData: [],
-      //上传图片的地址
-      uploadURl: "http://localhost:5000/api/upload",
+      // 上传图片的地址
+      uploadURl: 'http://localhost:5000/api/upload',
       headerObj: {
-        Authorization: window.sessionStorage.getItem("token"),
+        Authorization: window.sessionStorage.getItem('token')
       },
-      //控制图片预览对话框的显示与隐藏
+      // 控制图片预览对话框的显示与隐藏
       previewVisible: false,
-      //图片预览显示的路径
-      previewPath: "",
-      
-    };
+      // 图片预览显示的路径
+      previewPath: ''
+
+    }
   },
-  //生命周期函数
-  created() {
-    this.getCateList();
+  // 生命周期函数
+  created () {
+    this.getCateList()
   },
   methods: {
-    //获取所有商品分类数据
-    async getCateList() {
-      const { data: res } = await this.$http.get(`categories/parentcates`);
-      if (!res.success) return this.$message.error(res.msg);
-      this.catelist = res.response;
+    // 获取所有商品分类数据
+    async getCateList () {
+      const { data: res } = await this.$http.get('categories/parentcates')
+      if (!res.success) return this.$message.error(res.msg)
+      this.catelist = res.response
     },
-    //级联选择器改变事件
-    handleChange() {
+    // 级联选择器改变事件
+    handleChange () {
       if (this.addForm.goods_Cat.length !== 3) {
-        this.addForm.goods_Cat = [];
+        this.addForm.goods_Cat = []
       }
     },
-    //tab切换事件
-    beforeTabLeave(activeName, oldActiveName) {
-      if (oldActiveName === "0" && this.addForm.goods_Cat.length !== 3) {
-        this.$message.error("请选择商品分类！");
-        return false;
+    // tab切换事件
+    beforeTabLeave (activeName, oldActiveName) {
+      if (oldActiveName === '0' && this.addForm.goods_Cat.length !== 3) {
+        this.$message.error('请选择商品分类！')
+        return false
       }
     },
-    //tab点击事件
-    async tabClicked() {
-      //访问的是动态参数面板
-      if (this.activeIndex === "1") {
-        //根据所选分类的id,和当前所处的面板，获取对应的参数
-        const { data: res } = await this.$http.get(`cateparams/paramlist`, {
-          params: { attr_Sel: "many", cat_ID: this.cateId },
-        });
-        if (!res.success) return this.$message.error(res.msg);
-        //字符串转数组
+    // tab点击事件
+    async tabClicked () {
+      // 访问的是动态参数面板
+      if (this.activeIndex === '1') {
+        // 根据所选分类的id,和当前所处的面板，获取对应的参数
+        const { data: res } = await this.$http.get('cateparams/paramlist', {
+          params: { attr_Sel: 'many', cat_ID: this.cateId }
+        })
+        if (!res.success) return this.$message.error(res.msg)
+        // 字符串转数组
         res.response.forEach((item) => {
-          item.attr_Vals = item.attr_Vals ? item.attr_Vals.split(" ") : [];
-        });
-        this.manyTableData = res.response;
-      } //静态属性页
-      else if (this.activeIndex === "2") {
-        //根据所选分类的id,和当前所处的面板，获取对应的参数
-        const { data: res } = await this.$http.get(`cateparams/paramlist`, {
-          params: { attr_Sel: "only", cat_ID: this.cateId },
-        });
-        if (!res.success) return this.$message.error(res.msg);
-        this.onlyTableData = res.response;
+          item.attr_Vals = item.attr_Vals ? item.attr_Vals.split(' ') : []
+        })
+        this.manyTableData = res.response
+      } // 静态属性页
+      else if (this.activeIndex === '2') {
+        // 根据所选分类的id,和当前所处的面板，获取对应的参数
+        const { data: res } = await this.$http.get('cateparams/paramlist', {
+          params: { attr_Sel: 'only', cat_ID: this.cateId }
+        })
+        if (!res.success) return this.$message.error(res.msg)
+        this.onlyTableData = res.response
       }
     },
-    //上传图片预览
-    handlePreview(file) {
-      this.previewPath = this.uploadURl + file.response.response;
-      console.log(this.previewPath);
-      this.previewVisible = true;
+    // 上传图片预览
+    handlePreview (file) {
+      this.previewPath = this.uploadURl + file.response.response
+      console.log(this.previewPath)
+      this.previewVisible = true
     },
-    //图片移除事件
-    handleRemove(file) {
-      //1.获取将要删除的文件的临时路径
-      const filePath = file.response.response;
-      //2.从pics数组中，找到这个图片对应的索引值
+    // 图片移除事件
+    handleRemove (file) {
+      // 1.获取将要删除的文件的临时路径
+      const filePath = file.response.response
+      // 2.从pics数组中，找到这个图片对应的索引值
       const i = this.addForm.goods_Pics.findIndex(
         (x) => x === filePath
-      );
-      //3.调用数组的splice方法，把图片信息对象，从pics数组中移除
-      this.addForm.goods_Pics.splice(i, 1);
-      console.log(this.addForm);
+      )
+      // 3.调用数组的splice方法，把图片信息对象，从pics数组中移除
+      this.addForm.goods_Pics.splice(i, 1)
+      console.log(this.addForm)
     },
-    //监听文件上传成功事件
-    handleSuccess(response) {
-      //1.拼接得到一个图片信息对象
-      //2.将图片信息对象，push到pics数组中
-      this.addForm.goods_Pics.push(response.response);
+    // 监听文件上传成功事件
+    handleSuccess (response) {
+      // 1.拼接得到一个图片信息对象
+      // 2.将图片信息对象，push到pics数组中
+      this.addForm.goods_Pics.push(response.response)
     },
-    //添加商品
-    addGoods() {
+    // 添加商品
+    addGoods () {
       this.$refs.addFormRef.validate(async (valid) => {
-        if (!valid) return this.$message.error("请填写必要的表单项");
-        //执行添加的业务处理
-        //lodash cloneDeep(obj)
-        const form = _.cloneDeep(this.addForm);
-        form.goods_Cat = form.goods_Cat.join(",");
-        //处理动态参数
+        if (!valid) return this.$message.error('请填写必要的表单项')
+        // 执行添加的业务处理
+        // lodash cloneDeep(obj)
+        const form = _.cloneDeep(this.addForm)
+        form.goods_Cat = form.goods_Cat.join(',')
+        // 处理动态参数
         this.manyTableData.forEach((item) => {
-          this.addForm.goods_Attrs.push(item.attr_ID);
-        });
-        //处理静态属性
+          this.addForm.goods_Attrs.push(item.attr_ID)
+        })
+        // 处理静态属性
         this.onlyTableData.forEach((item) => {
-          this.addForm.goods_Attrs.push(item.attr_ID);
-        });
-        form.goods_Attrs = this.addForm.goods_Attrs.join(',');
-        form.goods_Pics=this.addForm.goods_Pics.join(',')
-        //发起请求添加商品
-        //商品名称必须是唯一的
-        const { data: res } = await this.$http.post("goodslists/addgood", form);
-        if (!res.success) return this.$message.error(res.msg);
-        this.$message.success(res.msg);
-        //跳转到商品页
+          this.addForm.goods_Attrs.push(item.attr_ID)
+        })
+        form.goods_Attrs = this.addForm.goods_Attrs.join(',')
+        form.goods_Pics = this.addForm.goods_Pics.join(',')
+        // 发起请求添加商品
+        // 商品名称必须是唯一的
+        const { data: res } = await this.$http.post('goodslists/addgood', form)
+        if (!res.success) return this.$message.error(res.msg)
+        this.$message.success(res.msg)
+        // 跳转到商品页
         this.$router.push('/goodslists')
-      });
-    },
+      })
+    }
   },
   computed: {
-    //当前选中的三级分类的id
-    cateId() {
+    // 当前选中的三级分类的id
+    cateId () {
       if (this.addForm.goods_Cat.length === 3) {
-        return this.addForm.goods_Cat[2];
+        return this.addForm.goods_Cat[2]
       }
-      return null;
-    },
-  },
-};
+      return null
+    }
+  }
+}
 </script>
 <style lang="less" scoped>
 .el-checkbox {
